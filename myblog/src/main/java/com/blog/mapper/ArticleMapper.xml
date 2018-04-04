@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.blog.mapper.ArticleMapper" >
+  <resultMap id="BaseResultMap" type="com.blog.pojo.Article" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="article_title" property="articleTitle" jdbcType="VARCHAR" />
+    <result column="article_images" property="articleImages" jdbcType="VARCHAR" />
+    <result column="article_lable" property="articleLable" jdbcType="VARCHAR" />
+    <result column="article_create_time" property="articleCreateTime" jdbcType="TIMESTAMP" />
+    <result column="article_update_time" property="articleUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="article_state" property="articleState" jdbcType="INTEGER" />
+    <result column="classification_id" property="classificationId" jdbcType="BIGINT" />
+    <result column="article_read_times" property="articleReadTimes" jdbcType="BIGINT" />
+    <result column="reprint" property="reprint" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.blog.pojo.Article" extends="BaseResultMap" >
+    <result column="article_content" property="articleContent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, user_id, article_title, article_images, article_lable, article_create_time, article_update_time, 
+    article_state, classification_id, article_read_times, reprint
+  </sql>
+  <sql id="Blob_Column_List" >
+    article_content
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.blog.pojo.ArticleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from article
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.blog.pojo.ArticleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from article
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from article
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from article
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.blog.pojo.ArticleExample" >
+    delete from article
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.blog.pojo.Article" >
+    insert into article (id, user_id, article_title, 
+      article_images, article_lable, article_create_time, 
+      article_update_time, article_state, classification_id, 
+      article_read_times, reprint, article_content
+      )
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{articleTitle,jdbcType=VARCHAR}, 
+      #{articleImages,jdbcType=VARCHAR}, #{articleLable,jdbcType=VARCHAR}, #{articleCreateTime,jdbcType=TIMESTAMP}, 
+      #{articleUpdateTime,jdbcType=TIMESTAMP}, #{articleState,jdbcType=INTEGER}, #{classificationId,jdbcType=BIGINT}, 
+      #{articleReadTimes,jdbcType=BIGINT}, #{reprint,jdbcType=INTEGER}, #{articleContent,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.blog.pojo.Article" >
+    insert into article
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="articleTitle != null" >
+        article_title,
+      </if>
+      <if test="articleImages != null" >
+        article_images,
+      </if>
+      <if test="articleLable != null" >
+        article_lable,
+      </if>
+      <if test="articleCreateTime != null" >
+        article_create_time,
+      </if>
+      <if test="articleUpdateTime != null" >
+        article_update_time,
+      </if>
+      <if test="articleState != null" >
+        article_state,
+      </if>
+      <if test="classificationId != null" >
+        classification_id,
+      </if>
+      <if test="articleReadTimes != null" >
+        article_read_times,
+      </if>
+      <if test="reprint != null" >
+        reprint,
+      </if>
+      <if test="articleContent != null" >
+        article_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="articleTitle != null" >
+        #{articleTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="articleImages != null" >
+        #{articleImages,jdbcType=VARCHAR},
+      </if>
+      <if test="articleLable != null" >
+        #{articleLable,jdbcType=VARCHAR},
+      </if>
+      <if test="articleCreateTime != null" >
+        #{articleCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="articleUpdateTime != null" >
+        #{articleUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="articleState != null" >
+        #{articleState,jdbcType=INTEGER},
+      </if>
+      <if test="classificationId != null" >
+        #{classificationId,jdbcType=BIGINT},
+      </if>
+      <if test="articleReadTimes != null" >
+        #{articleReadTimes,jdbcType=BIGINT},
+      </if>
+      <if test="reprint != null" >
+        #{reprint,jdbcType=INTEGER},
+      </if>
+      <if test="articleContent != null" >
+        #{articleContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.blog.pojo.ArticleExample" resultType="java.lang.Integer" >
+    select count(*) from article
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update article
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.articleTitle != null" >
+        article_title = #{record.articleTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.articleImages != null" >
+        article_images = #{record.articleImages,jdbcType=VARCHAR},
+      </if>
+      <if test="record.articleLable != null" >
+        article_lable = #{record.articleLable,jdbcType=VARCHAR},
+      </if>
+      <if test="record.articleCreateTime != null" >
+        article_create_time = #{record.articleCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.articleUpdateTime != null" >
+        article_update_time = #{record.articleUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.articleState != null" >
+        article_state = #{record.articleState,jdbcType=INTEGER},
+      </if>
+      <if test="record.classificationId != null" >
+        classification_id = #{record.classificationId,jdbcType=BIGINT},
+      </if>
+      <if test="record.articleReadTimes != null" >
+        article_read_times = #{record.articleReadTimes,jdbcType=BIGINT},
+      </if>
+      <if test="record.reprint != null" >
+        reprint = #{record.reprint,jdbcType=INTEGER},
+      </if>
+      <if test="record.articleContent != null" >
+        article_content = #{record.articleContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update article
+    set id = #{record.id,jdbcType=BIGINT},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      article_title = #{record.articleTitle,jdbcType=VARCHAR},
+      article_images = #{record.articleImages,jdbcType=VARCHAR},
+      article_lable = #{record.articleLable,jdbcType=VARCHAR},
+      article_create_time = #{record.articleCreateTime,jdbcType=TIMESTAMP},
+      article_update_time = #{record.articleUpdateTime,jdbcType=TIMESTAMP},
+      article_state = #{record.articleState,jdbcType=INTEGER},
+      classification_id = #{record.classificationId,jdbcType=BIGINT},
+      article_read_times = #{record.articleReadTimes,jdbcType=BIGINT},
+      reprint = #{record.reprint,jdbcType=INTEGER},
+      article_content = #{record.articleContent,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update article
+    set id = #{record.id,jdbcType=BIGINT},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      article_title = #{record.articleTitle,jdbcType=VARCHAR},
+      article_images = #{record.articleImages,jdbcType=VARCHAR},
+      article_lable = #{record.articleLable,jdbcType=VARCHAR},
+      article_create_time = #{record.articleCreateTime,jdbcType=TIMESTAMP},
+      article_update_time = #{record.articleUpdateTime,jdbcType=TIMESTAMP},
+      article_state = #{record.articleState,jdbcType=INTEGER},
+      classification_id = #{record.classificationId,jdbcType=BIGINT},
+      article_read_times = #{record.articleReadTimes,jdbcType=BIGINT},
+      reprint = #{record.reprint,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.blog.pojo.Article" >
+    update article
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="articleTitle != null" >
+        article_title = #{articleTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="articleImages != null" >
+        article_images = #{articleImages,jdbcType=VARCHAR},
+      </if>
+      <if test="articleLable != null" >
+        article_lable = #{articleLable,jdbcType=VARCHAR},
+      </if>
+      <if test="articleCreateTime != null" >
+        article_create_time = #{articleCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="articleUpdateTime != null" >
+        article_update_time = #{articleUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="articleState != null" >
+        article_state = #{articleState,jdbcType=INTEGER},
+      </if>
+      <if test="classificationId != null" >
+        classification_id = #{classificationId,jdbcType=BIGINT},
+      </if>
+      <if test="articleReadTimes != null" >
+        article_read_times = #{articleReadTimes,jdbcType=BIGINT},
+      </if>
+      <if test="reprint != null" >
+        reprint = #{reprint,jdbcType=INTEGER},
+      </if>
+      <if test="articleContent != null" >
+        article_content = #{articleContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.blog.pojo.Article" >
+    update article
+    set user_id = #{userId,jdbcType=BIGINT},
+      article_title = #{articleTitle,jdbcType=VARCHAR},
+      article_images = #{articleImages,jdbcType=VARCHAR},
+      article_lable = #{articleLable,jdbcType=VARCHAR},
+      article_create_time = #{articleCreateTime,jdbcType=TIMESTAMP},
+      article_update_time = #{articleUpdateTime,jdbcType=TIMESTAMP},
+      article_state = #{articleState,jdbcType=INTEGER},
+      classification_id = #{classificationId,jdbcType=BIGINT},
+      article_read_times = #{articleReadTimes,jdbcType=BIGINT},
+      reprint = #{reprint,jdbcType=INTEGER},
+      article_content = #{articleContent,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.blog.pojo.Article" >
+    update article
+    set user_id = #{userId,jdbcType=BIGINT},
+      article_title = #{articleTitle,jdbcType=VARCHAR},
+      article_images = #{articleImages,jdbcType=VARCHAR},
+      article_lable = #{articleLable,jdbcType=VARCHAR},
+      article_create_time = #{articleCreateTime,jdbcType=TIMESTAMP},
+      article_update_time = #{articleUpdateTime,jdbcType=TIMESTAMP},
+      article_state = #{articleState,jdbcType=INTEGER},
+      classification_id = #{classificationId,jdbcType=BIGINT},
+      article_read_times = #{articleReadTimes,jdbcType=BIGINT},
+      reprint = #{reprint,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

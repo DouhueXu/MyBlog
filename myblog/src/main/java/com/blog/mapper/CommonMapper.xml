@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.blog.mapper.CommonMapper" >
+  <resultMap id="BaseResultMap" type="com.blog.pojo.Common" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="article_id" property="articleId" jdbcType="BIGINT" />
+    <result column="parent_id" property="parentId" jdbcType="BIGINT" />
+    <result column="is_parent" property="isParent" jdbcType="INTEGER" />
+    <result column="common_content" property="commonContent" jdbcType="VARCHAR" />
+    <result column="common_time" property="commonTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, user_id, article_id, parent_id, is_parent, common_content, common_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.blog.pojo.CommonExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from common
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from common
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from common
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.blog.pojo.CommonExample" >
+    delete from common
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.blog.pojo.Common" >
+    insert into common (id, user_id, article_id, 
+      parent_id, is_parent, common_content, 
+      common_time)
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{articleId,jdbcType=BIGINT}, 
+      #{parentId,jdbcType=BIGINT}, #{isParent,jdbcType=INTEGER}, #{commonContent,jdbcType=VARCHAR}, 
+      #{commonTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.blog.pojo.Common" >
+    insert into common
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="articleId != null" >
+        article_id,
+      </if>
+      <if test="parentId != null" >
+        parent_id,
+      </if>
+      <if test="isParent != null" >
+        is_parent,
+      </if>
+      <if test="commonContent != null" >
+        common_content,
+      </if>
+      <if test="commonTime != null" >
+        common_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="articleId != null" >
+        #{articleId,jdbcType=BIGINT},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="isParent != null" >
+        #{isParent,jdbcType=INTEGER},
+      </if>
+      <if test="commonContent != null" >
+        #{commonContent,jdbcType=VARCHAR},
+      </if>
+      <if test="commonTime != null" >
+        #{commonTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.blog.pojo.CommonExample" resultType="java.lang.Integer" >
+    select count(*) from common
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update common
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.articleId != null" >
+        article_id = #{record.articleId,jdbcType=BIGINT},
+      </if>
+      <if test="record.parentId != null" >
+        parent_id = #{record.parentId,jdbcType=BIGINT},
+      </if>
+      <if test="record.isParent != null" >
+        is_parent = #{record.isParent,jdbcType=INTEGER},
+      </if>
+      <if test="record.commonContent != null" >
+        common_content = #{record.commonContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commonTime != null" >
+        common_time = #{record.commonTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update common
+    set id = #{record.id,jdbcType=BIGINT},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      article_id = #{record.articleId,jdbcType=BIGINT},
+      parent_id = #{record.parentId,jdbcType=BIGINT},
+      is_parent = #{record.isParent,jdbcType=INTEGER},
+      common_content = #{record.commonContent,jdbcType=VARCHAR},
+      common_time = #{record.commonTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.blog.pojo.Common" >
+    update common
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="articleId != null" >
+        article_id = #{articleId,jdbcType=BIGINT},
+      </if>
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="isParent != null" >
+        is_parent = #{isParent,jdbcType=INTEGER},
+      </if>
+      <if test="commonContent != null" >
+        common_content = #{commonContent,jdbcType=VARCHAR},
+      </if>
+      <if test="commonTime != null" >
+        common_time = #{commonTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.blog.pojo.Common" >
+    update common
+    set user_id = #{userId,jdbcType=BIGINT},
+      article_id = #{articleId,jdbcType=BIGINT},
+      parent_id = #{parentId,jdbcType=BIGINT},
+      is_parent = #{isParent,jdbcType=INTEGER},
+      common_content = #{commonContent,jdbcType=VARCHAR},
+      common_time = #{commonTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

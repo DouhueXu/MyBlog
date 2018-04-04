@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.blog.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.blog.pojo.User" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_account" property="userAccount" jdbcType="VARCHAR" />
+    <result column="user_password" property="userPassword" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="user_head_pic" property="userHeadPic" jdbcType="VARCHAR" />
+    <result column="user_sex" property="userSex" jdbcType="INTEGER" />
+    <result column="user_birthday" property="userBirthday" jdbcType="TIMESTAMP" />
+    <result column="user_create_time" property="userCreateTime" jdbcType="TIMESTAMP" />
+    <result column="user_update_time" property="userUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="business_card_id" property="businessCardId" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, user_account, user_password, user_name, user_head_pic, user_sex, user_birthday, 
+    user_create_time, user_update_time, business_card_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.blog.pojo.UserExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.blog.pojo.UserExample" >
+    delete from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.blog.pojo.User" >
+    insert into user (id, user_account, user_password, 
+      user_name, user_head_pic, user_sex, 
+      user_birthday, user_create_time, user_update_time, 
+      business_card_id)
+    values (#{id,jdbcType=BIGINT}, #{userAccount,jdbcType=VARCHAR}, #{userPassword,jdbcType=VARCHAR}, 
+      #{userName,jdbcType=VARCHAR}, #{userHeadPic,jdbcType=VARCHAR}, #{userSex,jdbcType=INTEGER}, 
+      #{userBirthday,jdbcType=TIMESTAMP}, #{userCreateTime,jdbcType=TIMESTAMP}, #{userUpdateTime,jdbcType=TIMESTAMP}, 
+      #{businessCardId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.blog.pojo.User" >
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userAccount != null" >
+        user_account,
+      </if>
+      <if test="userPassword != null" >
+        user_password,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="userHeadPic != null" >
+        user_head_pic,
+      </if>
+      <if test="userSex != null" >
+        user_sex,
+      </if>
+      <if test="userBirthday != null" >
+        user_birthday,
+      </if>
+      <if test="userCreateTime != null" >
+        user_create_time,
+      </if>
+      <if test="userUpdateTime != null" >
+        user_update_time,
+      </if>
+      <if test="businessCardId != null" >
+        business_card_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userAccount != null" >
+        #{userAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword != null" >
+        #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userHeadPic != null" >
+        #{userHeadPic,jdbcType=VARCHAR},
+      </if>
+      <if test="userSex != null" >
+        #{userSex,jdbcType=INTEGER},
+      </if>
+      <if test="userBirthday != null" >
+        #{userBirthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userCreateTime != null" >
+        #{userCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userUpdateTime != null" >
+        #{userUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="businessCardId != null" >
+        #{businessCardId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.blog.pojo.UserExample" resultType="java.lang.Integer" >
+    select count(*) from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update user
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.userAccount != null" >
+        user_account = #{record.userAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userPassword != null" >
+        user_password = #{record.userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userName != null" >
+        user_name = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userHeadPic != null" >
+        user_head_pic = #{record.userHeadPic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userSex != null" >
+        user_sex = #{record.userSex,jdbcType=INTEGER},
+      </if>
+      <if test="record.userBirthday != null" >
+        user_birthday = #{record.userBirthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.userCreateTime != null" >
+        user_create_time = #{record.userCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.userUpdateTime != null" >
+        user_update_time = #{record.userUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.businessCardId != null" >
+        business_card_id = #{record.businessCardId,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update user
+    set id = #{record.id,jdbcType=BIGINT},
+      user_account = #{record.userAccount,jdbcType=VARCHAR},
+      user_password = #{record.userPassword,jdbcType=VARCHAR},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      user_head_pic = #{record.userHeadPic,jdbcType=VARCHAR},
+      user_sex = #{record.userSex,jdbcType=INTEGER},
+      user_birthday = #{record.userBirthday,jdbcType=TIMESTAMP},
+      user_create_time = #{record.userCreateTime,jdbcType=TIMESTAMP},
+      user_update_time = #{record.userUpdateTime,jdbcType=TIMESTAMP},
+      business_card_id = #{record.businessCardId,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.blog.pojo.User" >
+    update user
+    <set >
+      <if test="userAccount != null" >
+        user_account = #{userAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword != null" >
+        user_password = #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userHeadPic != null" >
+        user_head_pic = #{userHeadPic,jdbcType=VARCHAR},
+      </if>
+      <if test="userSex != null" >
+        user_sex = #{userSex,jdbcType=INTEGER},
+      </if>
+      <if test="userBirthday != null" >
+        user_birthday = #{userBirthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userCreateTime != null" >
+        user_create_time = #{userCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userUpdateTime != null" >
+        user_update_time = #{userUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="businessCardId != null" >
+        business_card_id = #{businessCardId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.blog.pojo.User" >
+    update user
+    set user_account = #{userAccount,jdbcType=VARCHAR},
+      user_password = #{userPassword,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      user_head_pic = #{userHeadPic,jdbcType=VARCHAR},
+      user_sex = #{userSex,jdbcType=INTEGER},
+      user_birthday = #{userBirthday,jdbcType=TIMESTAMP},
+      user_create_time = #{userCreateTime,jdbcType=TIMESTAMP},
+      user_update_time = #{userUpdateTime,jdbcType=TIMESTAMP},
+      business_card_id = #{businessCardId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
